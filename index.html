@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Knockout Roofs | Residential & Commercial Roofing in New Jersey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --charcoal:#17181A;
+    --charcoal-soft:#232427;
+    --red:#C8102E;
+    --red-deep:#8F0B20;
+    --red-tint:#FBEAEC;
+    --white:#FFFFFF;
+    --offwhite:#F7F5F3;
+    --steel:#5B5F66;
+    --steel-light:#AEB2B9;
+    --line-on-dark:#343538;
+    --line-soft:#ECEAE6;
+    --radius-lg:22px;
+    --radius-md:14px;
+    --radius-sm:10px;
+    --shadow-soft:0 20px 45px rgba(20,20,22,0.12);
+    --shadow-card:0 10px 26px rgba(20,20,22,0.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Work Sans', sans-serif;
+    color:var(--charcoal);
+    background:var(--white);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Oswald', sans-serif;
+    font-weight:700;
+    line-height:1.1;
+    letter-spacing:0.2px;
+  }
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  .wrap{max-width:1200px; margin:0 auto; padding:0 32px;}
+  button{font-family:inherit; cursor:pointer;}
+
+  /* ---------- Buttons ---------- */
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    padding:16px 30px;
+    font-weight:600; font-size:16px;
+    border:2px solid transparent;
+    border-radius:var(--radius-md);
+    white-space:nowrap;
+    transition:background .18s ease, color .18s ease, border-color .18s ease, transform .18s ease;
+  }
+  .btn-red{ background:var(--red); color:var(--white); }
+  .btn-red:hover{ background:var(--red-deep); transform:translateY(-1px); }
+  .btn-outline-light{ border-color:rgba(255,255,255,0.55); color:var(--white); }
+  .btn-outline-light:hover{ background:rgba(255,255,255,0.12); border-color:var(--white); }
+  .btn-outline-dark{ border-color:var(--charcoal); color:var(--charcoal); }
+  .btn-outline-dark:hover{ background:var(--charcoal); color:var(--white); }
+
+  /* ---------- Nav ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:var(--charcoal);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 32px;
+    max-width:1200px; margin:0 auto;
+    gap:24px;
+  }
+  .nav-logo{ display:flex; align-items:center; gap:12px; }
+  .nav-logo img{ height:42px; width:auto; }
+  .nav-links{ display:flex; align-items:center; gap:30px; }
+  .nav-links a{
+    color:var(--steel-light); font-size:15px; font-weight:500;
+    transition:color .15s ease;
+  }
+  .nav-links a:hover{ color:var(--white); }
+  .nav-right{ display:flex; align-items:center; gap:16px; }
+  .nav-phone{ color:var(--white); font-weight:600; font-size:15px; white-space:nowrap; }
+  .nav-toggle{ display:none; background:none; border:none; padding:6px; margin-left:2px; }
+  .nav-toggle svg{ width:24px; height:24px; stroke:var(--white); }
+  .mobile-menu{ display:none; }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;
+    padding:96px 0 84px;
+    overflow:hidden;
+    background:var(--charcoal);
+  }
+  .hero-bg{ position:absolute; inset:0; z-index:0; }
+  .hero-bg img{ width:100%; height:100%; object-fit:cover; object-position:center 32%; }
+  .hero-overlay{
+    position:absolute; inset:0;
+    background:linear-gradient(115deg, rgba(17,18,20,0.95) 6%, rgba(17,18,20,0.88) 42%, rgba(23,10,12,0.62) 78%, rgba(23,10,12,0.5) 100%);
+  }
+  .hero-inner{
+    position:relative; z-index:1;
+    display:grid; grid-template-columns:1.05fr 0.95fr;
+    gap:60px; align-items:start;
+  }
+  .hero-eyebrow-rule{ width:56px; height:4px; background:var(--red); border-radius:2px; margin-bottom:22px; }
+  .hero h1{ font-size:50px; max-width:560px; color:var(--white); }
+  .hero p.sub{
+    margin-top:20px; font-size:18px; color:var(--steel-light);
+    max-width:480px; font-weight:400;
+  }
+  .pill-row{ display:flex; flex-wrap:wrap; gap:12px; margin-top:28px; }
+  .pill{
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.25);
+    color:var(--white);
+    padding:10px 20px;
+    border-radius:999px;
+    font-size:14px; font-weight:600;
+    white-space:nowrap;
+  }
+  .hero-ctas{ margin-top:30px; }
+
+  /* ---------- Hero form ---------- */
+  .hero-form{
+    background:rgba(23,24,26,0.55);
+    border:1px solid rgba(255,255,255,0.14);
+    border-radius:var(--radius-lg);
+    padding:32px;
+    backdrop-filter:blur(6px);
+  }
+  .hero-form h3{ color:var(--white); font-size:22px; margin-bottom:6px; }
+  .hero-form .form-sub{ color:var(--steel-light); font-size:14px; margin-bottom:22px; }
+  .hero-form .form-row{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .hero-form .field{ margin-bottom:14px; }
+  .hero-form .field label{
+    display:block; font-size:12px; font-weight:600; margin-bottom:6px;
+    color:var(--steel-light); text-transform:uppercase; letter-spacing:0.5px;
+  }
+  .hero-form input, .hero-form select, .hero-form textarea{
+    width:100%; border:1px solid rgba(255,255,255,0.28);
+    background:rgba(255,255,255,0.06);
+    border-radius:var(--radius-sm);
+    padding:13px 14px;
+    font-family:'Work Sans', sans-serif; font-size:15px; color:var(--white);
+  }
+  .hero-form input::placeholder, .hero-form textarea::placeholder{ color:rgba(255,255,255,0.45); }
+  .hero-form select{ color:rgba(255,255,255,0.85); }
+  .hero-form select option{ color:var(--charcoal); }
+  .hero-form input:focus, .hero-form select:focus, .hero-form textarea:focus{
+    outline:none; border-color:var(--red);
+  }
+  .hero-form textarea{ resize:vertical; min-height:70px; }
+  .hero-form .btn{ width:100%; margin-top:6px; }
+  .hero-form .form-note{ font-size:12px; color:var(--steel-light); margin-top:14px; text-align:center; }
+
+  /* ---------- Section shell ---------- */
+  section{ padding:100px 0; }
+  .section-head{ max-width:640px; margin:0 auto 56px; text-align:center; }
+  .section-head h2{ font-size:36px; }
+  .section-head p{ margin-top:14px; color:var(--steel); font-size:17px; }
+  .rule-red{ width:56px; height:4px; background:var(--red); border-radius:2px; margin:0 auto 18px; }
+
+  /* ---------- Services ---------- */
+  .services{ background:var(--offwhite); }
+  .services-grid{
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:24px;
+  }
+  .service-card{
+    background:var(--white);
+    border:1px solid var(--line-soft);
+    border-radius:var(--radius-lg);
+    padding:34px 30px;
+    box-shadow:var(--shadow-card);
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .service-card:hover{ transform:translateY(-5px); box-shadow:var(--shadow-soft); }
+  .service-icon{
+    width:54px; height:54px; border-radius:14px;
+    background:var(--red-tint);
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:20px;
+  }
+  .service-icon svg{ width:26px; height:26px; stroke:var(--red); }
+  .service-card h3{ font-size:20px; margin-bottom:10px; }
+  .service-card p{ font-size:15px; color:var(--steel); }
+
+  /* ---------- Gallery ---------- */
+  .gallery{ background:var(--charcoal); color:var(--white); }
+  .gallery .section-head p{ color:var(--steel-light); }
+  .gallery .section-head h2{ color:var(--white); }
+  .project{ margin-bottom:52px; }
+  .project:last-child{ margin-bottom:0; }
+  .project-label{
+    font-family:'Oswald', sans-serif; font-weight:600; font-size:18px;
+    margin-bottom:16px; color:var(--white); text-align:center;
+  }
+  .ba-pair{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .ba-block{
+    aspect-ratio:16/10;
+    position:relative;
+    overflow:hidden;
+    border-radius:var(--radius-md);
+    box-shadow:var(--shadow-card);
+  }
+  .ba-block img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .ba-tag{
+    position:absolute; top:14px; left:14px;
+    background:var(--red); color:var(--white);
+    font-family:'Oswald', sans-serif; font-weight:600; font-size:13px;
+    padding:6px 16px; border-radius:999px; letter-spacing:0.5px;
+  }
+  .ba-tag.after{ background:rgba(23,24,26,0.85); border:1px solid var(--red); }
+
+  /* ---------- Why us ---------- */
+  .why-grid{
+    display:grid; grid-template-columns:repeat(4, 1fr); gap:32px;
+  }
+  .why-item{ text-align:center; }
+  .why-item .why-icon{
+    width:56px; height:56px; border-radius:14px;
+    background:var(--red-tint);
+    display:flex; align-items:center; justify-content:center;
+    margin:0 auto 18px;
+  }
+  .why-item .why-icon svg{ width:26px; height:26px; stroke:var(--red); }
+  .why-item h3{ font-size:18px; margin-bottom:8px; }
+  .why-item p{ font-size:15px; color:var(--steel); }
+
+  /* ---------- Final CTA banner ---------- */
+  .cta-banner{
+    background:var(--red); color:var(--white); text-align:center;
+    padding:76px 0;
+  }
+  .cta-banner h2{ font-size:34px; color:var(--white); }
+  .cta-banner p{ color:rgba(255,255,255,0.85); margin-top:12px; font-size:17px; }
+  .cta-banner .banner-phone{
+    display:block; font-family:'Oswald', sans-serif; font-weight:700;
+    font-size:42px; margin:20px 0 28px;
+  }
+  .cta-banner .btn-outline-light{ border-color:rgba(255,255,255,0.7); }
+  .cta-banner .btn-outline-light:hover{ background:var(--white); color:var(--red); }
+
+  /* ---------- Footer ---------- */
+  footer{ background:var(--charcoal); color:var(--steel-light); padding:56px 0 28px; }
+  .footer-top{
+    display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:40px;
+    padding-bottom:36px; border-bottom:1px solid var(--line-on-dark);
+  }
+  .footer-logo img{ height:44px; margin-bottom:14px; }
+  .footer-top p{ font-size:14px; max-width:280px; }
+  .footer-col h4{
+    font-family:'Oswald', sans-serif; color:var(--white); font-size:15px;
+    margin-bottom:16px; letter-spacing:0.3px;
+  }
+  .footer-col a, .footer-col p{ display:block; font-size:14px; margin-bottom:10px; color:var(--steel-light); }
+  .footer-col a:hover{ color:var(--white); }
+  .footer-bottom{
+    display:flex; justify-content:space-between; align-items:center;
+    padding-top:24px; font-size:13px; flex-wrap:wrap; gap:8px;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 900px){
+    .nav-links{ display:none; }
+    .nav-toggle{ display:block; }
+    .nav-phone{ display:none; }
+    .mobile-menu{
+      display:none; flex-direction:column;
+      background:var(--charcoal); border-top:1px solid var(--line-on-dark);
+      padding:8px 32px 20px;
+    }
+    .mobile-menu.open{ display:flex; }
+    .mobile-menu a{
+      color:var(--steel-light); font-size:16px; font-weight:500;
+      padding:12px 0; border-bottom:1px solid var(--line-on-dark);
+    }
+    .mobile-menu a:last-child{ border-bottom:none; }
+    .hero-inner{ grid-template-columns:1fr; }
+    .hero h1{ font-size:38px; }
+    .hero{ padding:56px 0 72px; }
+    .hero-form{ max-width:520px; }
+    .services-grid{ grid-template-columns:1fr 1fr; }
+    .why-grid{ grid-template-columns:1fr 1fr; }
+    .footer-top{ grid-template-columns:1fr; gap:28px; }
+  }
+  @media (max-width: 560px){
+    .services-grid{ grid-template-columns:1fr; }
+    .why-grid{ grid-template-columns:1fr; }
+    .ba-pair{ grid-template-columns:1fr; }
+    .hero h1{ font-size:32px; }
+    .hero-form{ padding:24px; }
+    .hero-form .form-row{ grid-template-columns:1fr; }
+    section{ padding:68px 0; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="nav-logo">
+      <img src="logo-nav.png" alt="Knockout Roofs logo">
+    </div>
+    <nav class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#work">Our Work</a>
+      <a href="#why">Why Us</a>
+      <a href="#lead-form">Contact</a>
+    </nav>
+    <div class="nav-right">
+      <a class="nav-phone" href="tel:7326309446">732-630-9446</a>
+      <a class="btn btn-red" href="#lead-form" style="padding:10px 22px; font-size:14px;">Book Free Inspection</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu">
+    <a href="#services">Services</a>
+    <a href="#work">Our Work</a>
+    <a href="#why">Why Us</a>
+    <a href="#lead-form">Contact</a>
+    <a href="tel:7326309446">Call 732-630-9446</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-bg">
+    <img src="hero-bg.jpg" alt="">
+    <div class="hero-overlay"></div>
+  </div>
+  <div class="wrap hero-inner">
+    <div>
+      <div class="hero-eyebrow-rule"></div>
+      <h1>Residential & Commercial Roofing, Done Right the First Time.</h1>
+      <p class="sub">Knockout Roofs is a licensed New Jersey roofing contractor delivering expert craftsmanship in roofing, siding, gutters, and solar for homes and businesses across the state.</p>
+      <div class="pill-row">
+        <span class="pill">Licensed &amp; Insured</span>
+        <span class="pill">NJ Statewide</span>
+        <span class="pill">Free Inspections</span>
+      </div>
+      <div class="hero-ctas">
+        <a class="btn btn-outline-light" href="tel:7326309446">Call 732-630-9446</a>
+      </div>
+    </div>
+
+    <form class="hero-form" id="bookForm">
+      <h3>Book Your Free Inspection</h3>
+      <p class="form-sub">Tell us about your property, we'll follow up to schedule a time that works.</p>
+      <div class="form-row">
+        <div class="field">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="Name" placeholder="Jane Smith" required>
+        </div>
+        <div class="field">
+          <label for="phone">Phone</label>
+          <input type="tel" id="phone" name="Phone" placeholder="(732) 555-0100" required>
+        </div>
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="Email" placeholder="you@email.com" required>
+      </div>
+      <div class="field">
+        <label for="address">Property Address</label>
+        <input type="text" id="address" name="Address" placeholder="Street, City, NJ" required>
+      </div>
+      <div class="field">
+        <label for="service">Service Needed</label>
+        <select id="service" name="Service">
+          <option>Roof Replacement</option>
+          <option>Roof Repair</option>
+          <option>Siding</option>
+          <option>Gutters</option>
+          <option>Solar</option>
+          <option>Commercial Roofing</option>
+          <option>Not sure yet</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-red" id="bookSubmitBtn">Book Free Inspection</button>
+      <p class="form-note" id="formStatus">Your information is secure and never shared.</p>
+    </form>
+  </div>
+</section>
+
+<section id="services" class="services">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="rule-red"></div>
+      <h2>Our Services</h2>
+      <p>From a single repair to a full commercial re-roof, our team brings the same level of craftsmanship to every property.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12L12 4l9 8"/><path d="M6 10v9h12v-9"/></svg></div>
+        <h3>Roof Replacement</h3>
+        <p>Full tear-off and new roof installation, built to last for homes across New Jersey.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.2-3.2a4 4 0 0 1-5.7 5.7L6.7 21.3a1.5 1.5 0 0 1-2.1-2.1L14.5 8.7a4 4 0 0 1 5.7-5.7z"/></svg></div>
+        <h3>Roof Repair</h3>
+        <p>Leaks, missing shingles, and storm damage fixed fast by an expert crew.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="1"/><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/></svg></div>
+        <h3>Siding</h3>
+        <p>Durable siding installed with precision, protecting and updating your exterior.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"/><path d="M6 6v13a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V6"/><path d="M10 6V4a2 2 0 0 1 4 0v2"/></svg></div>
+        <h3>Gutters</h3>
+        <p>Seamless gutter systems built to move water away from your property.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg></div>
+        <h3>Solar Panels</h3>
+        <p>Solar installation paired with the roof work needed to support it.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="7" height="13"/><rect x="14" y="3" width="7" height="18"/><line x1="6" y1="12" x2="6" y2="12.01"/><line x1="17" y1="8" x2="17" y2="8.01"/></svg></div>
+        <h3>Commercial Roofing</h3>
+        <p>Flat and low-slope roofing for warehouses, retail, and office buildings.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="work" class="gallery">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="rule-red"></div>
+      <h2>Recent Work</h2>
+      <p>A look at completed projects across New Jersey.</p>
+    </div>
+
+    <div class="project">
+      <div class="project-label">Full Roof Replacement — Colonial</div>
+      <div class="ba-pair">
+        <div class="ba-block">
+          <span class="ba-tag">Before</span>
+          <img src="blue-before.jpeg" alt="Roof before replacement, old shingles torn off and tarped">
+        </div>
+        <div class="ba-block">
+          <span class="ba-tag after">After</span>
+          <img src="blue-after.jpeg" alt="Roof after replacement, finished new shingles">
+        </div>
+      </div>
+    </div>
+    <div class="project">
+      <div class="project-label">Full Roof Replacement — Two-Story Home</div>
+      <div class="ba-pair">
+        <div class="ba-block">
+          <span class="ba-tag">Before</span>
+          <img src="tan-before.jpeg" alt="Roof mid-installation with crew working">
+        </div>
+        <div class="ba-block">
+          <span class="ba-tag after">After</span>
+          <img src="tan-after.jpeg" alt="Finished roof and home exterior">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="why">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="rule-red"></div>
+      <h2>Why Knockout Roofs</h2>
+      <p>Real craftsmanship, backed by licensing and insurance, with a team you can reach directly.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-item">
+        <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/></svg></div>
+        <h3>Licensed & Insured</h3>
+        <p>Every job is covered from the first inspection to the final walkthrough.</p>
+      </div>
+      <div class="why-item">
+        <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg></div>
+        <h3>Fast Free Inspections</h3>
+        <p>We assess the damage and get you a clear plan within days, not weeks.</p>
+      </div>
+      <div class="why-item">
+        <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5 17 22l-5-3-5 3 1.5-8.5"/></svg></div>
+        <h3>Expert Craftsmanship</h3>
+        <p>Meticulous installation from a team that takes pride in getting the details right.</p>
+      </div>
+      <div class="why-item">
+        <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg></div>
+        <h3>NJ Owned & Operated</h3>
+        <p>Based in New Jersey, working with New Jersey homeowners and businesses.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-banner">
+  <div class="wrap">
+    <h2>Ready to get your roof handled?</h2>
+    <p>Talk to Knockout Roofs directly, no call centers, no middlemen.</p>
+    <a class="banner-phone" href="tel:7326309446">732-630-9446</a>
+    <a class="btn btn-outline-light" href="#lead-form">Book Free Inspection</a>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-logo">
+        <img src="logo-nav.png" alt="Knockout Roofs logo">
+        <p>Residential and commercial roofing, siding, gutters, and solar across New Jersey.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <a href="tel:7326309446">732-630-9446</a>
+        <a href="mailto:info@knockoutroofs.com">info@knockoutroofs.com</a>
+        <p>New Jersey, Statewide</p>
+      </div>
+      <div class="footer-col">
+        <h4>Menu</h4>
+        <a href="#services">Services</a>
+        <a href="#work">Our Work</a>
+        <a href="#why">Why Us</a>
+        <a href="#lead-form">Book Inspection</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Knockout Roofs. Licensed &amp; Insured.</span>
+      <span>New Jersey</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Paste the Google Apps Script Web App URL here once deployed (ends in /exec)
+  const SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwS1q7IY8hVtcxLH14fh0QiiDi-1avbeJtYuCZBxudZq419cf-MU-LH3RfsmEfdd4iq/exec";
+
+  const bookForm = document.getElementById('bookForm');
+  const formStatus = document.getElementById('formStatus');
+  const submitBtn = document.getElementById('bookSubmitBtn');
+
+  bookForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    if (SHEET_WEBAPP_URL.indexOf('PASTE_YOUR_WEB_APP_URL_HERE') !== -1) {
+      formStatus.textContent = "Form isn't connected yet. Call 732-630-9446 to book directly.";
+      return;
+    }
+
+    const data = new FormData(bookForm);
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Sending...";
+
+    fetch(SHEET_WEBAPP_URL, {
+      method: 'POST',
+      body: data,
+      mode: 'no-cors'
+    })
+      .then(() => {
+        formStatus.textContent = "Thanks! We got your request and will call you shortly.";
+        bookForm.reset();
+      })
+      .catch(() => {
+        formStatus.textContent = "Something went wrong. Please call us at 732-630-9446.";
+      })
+      .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Book Free Inspection";
+      });
+  });
+
+  const navToggle = document.getElementById('navToggle');
+  const mobileMenu = document.getElementById('mobileMenu');
+  navToggle.addEventListener('click', () => {
+    const isOpen = mobileMenu.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', isOpen);
+  });
+  mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
+</body>
+</html>
