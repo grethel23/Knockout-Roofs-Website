@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Knockout Roofs | Residential & Commercial Roofing in New Jersey</title>
+
+<!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3V7NSJ4QKQ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-3V7NSJ4QKQ');
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -156,6 +165,7 @@
   .hero-form textarea{ resize:vertical; min-height:70px; }
   .hero-form .btn{ width:100%; margin-top:6px; }
   .hero-form .form-note{ font-size:12px; color:var(--steel-light); margin-top:14px; text-align:center; }
+  .hero-form .form-urgency{ font-size:13px; color:#F0A8A8; margin-bottom:14px; text-align:center; }
 
   /* ---------- Section shell ---------- */
   section{ padding:100px 0; }
@@ -328,7 +338,7 @@
   </nav>
 </header>
 
-<section class="hero">
+<section class="hero" id="lead-form">
   <div class="hero-bg">
     <img src="hero-bg.jpg" alt="">
     <div class="hero-overlay"></div>
@@ -369,6 +379,10 @@
         <label for="address">Property Address</label>
         <input type="text" id="address" name="Address" placeholder="Street, City, NJ" required>
       </div>
+      <div style="position:absolute; left:-9999px; top:-9999px;" aria-hidden="true">
+        <label for="website">Leave this field blank</label>
+        <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+      </div>
       <div class="field">
         <label for="service">Service Needed</label>
         <select id="service" name="Service">
@@ -381,6 +395,7 @@
           <option>Not sure yet</option>
         </select>
       </div>
+      <p class="form-urgency">Small roof issues rarely stay small. The sooner it's inspected, the less it costs to fix.</p>
       <button type="submit" class="btn btn-red" id="bookSubmitBtn">Book Free Inspection</button>
       <p class="form-note" id="formStatus">Your information is secure and never shared.</p>
     </form>
@@ -490,9 +505,9 @@
         <p>Meticulous installation from a team that takes pride in getting the details right.</p>
       </div>
       <div class="why-item">
-        <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg></div>
-        <h3>NJ Owned & Operated</h3>
-        <p>Based in New Jersey, working with New Jersey homeowners and businesses.</p>
+        <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 4.5-3 8-9 10-6-2-9-5.5-9-10V6l9-4 9 4v6z"/></svg></div>
+        <h3>Insurance Claim Experience</h3>
+        <p>We know how adjusters evaluate storm damage, so your claim doesn't get shortchanged.</p>
       </div>
     </div>
   </div>
@@ -530,7 +545,7 @@
     </div>
     <div class="footer-bottom">
       <span>© 2026 Knockout Roofs. Licensed &amp; Insured.</span>
-      <span>New Jersey</span>
+      <span><a href="privacy-policy.html">Privacy Policy</a> · New Jersey</span>
     </div>
   </div>
 </footer>
@@ -545,6 +560,13 @@
 
   bookForm.addEventListener('submit', function (e) {
     e.preventDefault();
+
+    // Honeypot: real visitors never fill this hidden field, bots often do.
+    if (bookForm.website.value) {
+      formStatus.textContent = "Thanks! We got your request and will call you shortly.";
+      bookForm.reset();
+      return;
+    }
 
     if (SHEET_WEBAPP_URL.indexOf('PASTE_YOUR_WEB_APP_URL_HERE') !== -1) {
       formStatus.textContent = "Form isn't connected yet. Call 732-630-9446 to book directly.";
